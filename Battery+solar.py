@@ -59,7 +59,7 @@ def battery_solar_optimization(prices, solar, capacity, max_rate, grid_limit):
                             best_solar_sell = sell_solar
                             best_profit = immediate_profit
         else:
-            for rate in range(-max_rate, max_rate+1,50):
+            for rate in range(-max_rate, max_rate+1,10):
                 new_charge = charge + rate
                 sell_solar = 0
 
@@ -108,20 +108,18 @@ def battery_solar_optimization(prices, solar, capacity, max_rate, grid_limit):
 
 
 # Random data for testing
-prices = np.random.uniform(-2, 2, size=24)  # Random prices, can be negative
+prices = np.random.uniform(-2, 2, size=96)  # Random prices, can be negative
 capacity = 2000  # Maximum battery capacity
 max_rate = 2000  # Maximum charge/discharge rate
 grid_limit = 2000  # Maximum rate at which we can buy/sell from/to the grid
 pv_prod = pd.read_excel('pv_prodction.xlsx', usecols=['Return delivery (kWh)'])
-pv = pv_prod['Return delivery (kWh)'].values
+solar_1 = pv_prod['Return delivery (kWh)'].values
 
-solar=np.zeros(24)
+solar=np.zeros(96)
 aux=0
 
-for i in range(10749,10845, 4):
-    for j in range(4):
-        solar[aux]+=pv[i+j]
-    solar[aux]=solar[aux]/4
+for i in range(10749,10845, 1):
+    solar[aux]=solar_1[i]
     aux+=1
 
 
@@ -145,7 +143,7 @@ for action in optimal_actions:
     soc.append(min(max(new_soc, 0), capacity))
     solar_sell.append(sell_solar)
 
-time_range = range(24)
+time_range = range(96)
 plt.figure(figsize=(16, 12))
 
 # Plot 1: Optimal Actions (Charging/Discharging, Selling Solar, and Solar Production)
