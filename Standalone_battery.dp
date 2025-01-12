@@ -28,7 +28,7 @@ def battery_optimization(prices, capacity, max_rate, grid_limit):
         best_profit = 0
 
         # Iterate over all possible rates
-        for rate in range(-max_rate, max_rate,1):
+        for rate in range(-max_rate, max_rate,5):
             new_charge = charge + rate
 
             # Ensure new_charge is within valid bounds
@@ -76,7 +76,7 @@ def battery_optimization(prices, capacity, max_rate, grid_limit):
 
 
 
-prices = np.random.uniform(-2, 2, size=24)  # Random prices, can be negative
+prices = np.random.uniform(-2, 2, size=96)  # Random prices, can be negative
 capacity = 2000 # Maximum battery capacity
 max_rate = 2000 # Maximum charge/discharge rate
 grid_limit = 2000 # Maximum rate at which we can buy/sell from/to the grid
@@ -100,7 +100,7 @@ for action in optimal_actions:
     # Ensure SoC stays within 0 and capacity
     soc.append(min(max(new_soc, 0), capacity))
 
-time_range = range(24)
+time_range = range(96)
 plt.figure(figsize=(16, 12))
 
 # Plot 1: Optimal Actions (Charging/Discharging Rates)
@@ -110,6 +110,7 @@ plt.axhline(0, color='black', linestyle='--')
 plt.title('Optimal Battery Charging/Discharging Rates')
 plt.xlabel('Time (hours)')
 plt.ylabel('Rate (kWh)')
+plt.xticks(ticks=range(0, 96, 4), labels=range(0, 24))
 plt.legend()
 plt.grid(True)
 
@@ -119,6 +120,7 @@ plt.plot(time_range, soc[:-1], label='State of Charge (SOC)', marker='s', color=
 plt.title('State of Charge Over Time')
 plt.xlabel('Time (hours)')
 plt.ylabel('SOC (kWh)')
+plt.xticks(ticks=range(0, 96, 4), labels=range(0, 24))
 plt.legend()
 plt.grid(True)
 
@@ -130,6 +132,7 @@ plt.plot(time_range, cumulative_profit, label='Cumulative Profit', marker='o', c
 plt.title('Daily and Cumulative Profit Over Time')
 plt.xlabel('Time (hours)')
 plt.ylabel('Profit ($)')
+plt.xticks(ticks=range(0, 96, 4), labels=range(0, 24))
 plt.legend()
 plt.grid(True)
 
